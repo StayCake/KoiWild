@@ -1,9 +1,23 @@
 name: KoiWild
 main: com.koisv.koiwild.KoiWild
-version: 0.1-SNAPSHOT
+version: 0.2-SNAPSHOT
 author: KeiKoi
 website: "https://www.koisv.com"
 api-version: 1.19
 description: Wild Server Plugin
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib:1.7.20
+#  - io.github.monun:kommand-core:2.14.0
+commands:
+  p:
+    description: Patch Notes
+    usage: /<command>
+  pw:
+    description: Write Patch
+    permission: koiWild.writePatch
+    usage: /<command> [u|d|<version>]
+
+permissions:
+  koiWild.writePatch:
+    description: make patch
+    default: op

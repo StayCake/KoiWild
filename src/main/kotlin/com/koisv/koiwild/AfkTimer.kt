@@ -1,5 +1,9 @@
 package com.koisv.koiwild
 
+import com.koisv.koiwild.KoiWild.Companion.isAfk
+import com.koisv.koiwild.KoiWild.Companion.lastActivity
+import com.koisv.koiwild.KoiWild.Companion.protectOn
+import hazae41.minecraft.kutils.bukkit.info
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
@@ -33,12 +37,14 @@ class AfkTimer: BukkitRunnable() {
                                 Component.text(" | 잠수").color(TextColor.color(100,100,100))
                             )
                     )
+                    protectOn(p)
                     instance.server.onlinePlayers.forEach {
                         it.sendMessage(
                             ChatColor.translateAlternateColorCodes(
                                 '&',"&7>> &r${p.name}&7님은 이제 &6잠수 상태&7입니다."
                             )
                         )
+                        instance.info(">> ${p.name}님은 이제 잠수 상태입니다.")
                     }
                     class ScreenTask : BukkitRunnable() {
                         override fun run() {
@@ -74,27 +80,22 @@ class AfkTimer: BukkitRunnable() {
                     var count = 5
                     class TimerTask : BukkitRunnable() {
                         override fun run() {
-                            scheduler.runTaskTimer(
-                                instance,
-                                Runnable {
-                                    if (count > 0) {
-                                        p.clearTitle()
-                                        p.showTitle(
-                                            Title.title(
-                                                Component.empty(),
-                                                Component.text("${count}초 후 잠수 상태로 진입합니다...")
-                                                    .color(TextColor.color(50, 50, 50)),
-                                                Title.Times.times(Duration.ofSeconds(1), Duration.ZERO, Duration.ZERO)
-                                            )
-                                        )
-                                        count--
-                                    } else if (scheduler.isCurrentlyRunning(taskId)) scheduler.cancelTask(taskId)
-                                }, 0, 20
-                            )
-                            isAfk[p] = 1
+                            if (count > 0 && isAfk[p] == 1) {
+                                p.clearTitle()
+                                p.showTitle(
+                                    Title.title(
+                                        Component.empty(),
+                                        Component.text("${count}초 후 잠수 상태로 진입합니다...")
+                                            .color(TextColor.color(50, 50, 50)),
+                                        Title.Times.times(Duration.ofSeconds(1), Duration.ZERO, Duration.ZERO)
+                                    )
+                                )
+                                count--
+                            } else if (!this@TimerTask.isCancelled) this@TimerTask.cancel()
                         }
                     }
-                    TimerTask().runTask(instance)
+                    TimerTask().runTaskTimer(instance, 0, 20)
+                    isAfk[p] = 1
                 }
             }
         }
