@@ -1,13 +1,6 @@
 package com.koisv.koiwild
 
-import com.koisv.koiwild.KoiWild.Companion.instance
-import hazae41.minecraft.kutils.bukkit.msg
-import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
-
-class Command : CommandExecutor {
+/*class Command : CommandExecutor {
     override fun onCommand(sender: CommandSender, cmd: Command, label: String, args: Array<out String>?): Boolean {
         return when (cmd.name) {
             "p" -> {
@@ -53,4 +46,4 @@ class Command : CommandExecutor {
             } else -> true
         }
     }
-}
+}*/

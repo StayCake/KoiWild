@@ -1,10 +1,10 @@
 plugins {
-    kotlin("jvm") version "1.7.20"
-    id("com.github.johnrengelman.shadow") version "7.1.2"
+    kotlin("jvm") version "1.8.21"
+    id("com.github.johnrengelman.shadow") version "+"
 }
 
 group = "com.koisv"
-version = "0.2-SNAPSHOT"
+version = "0.23-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -14,9 +14,8 @@ repositories {
 
 dependencies {
     compileOnly(kotlin("stdlib"))
-    compileOnly("io.papermc.paper:paper-api:1.19.2-R0.1-SNAPSHOT")
-    //compileOnly("io.github.monun:kommand-api:2.14.0")
-    implementation("com.github.hazae41:mc-kutils:3.3.3")
+    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
+    compileOnly("io.github.monun:kommand-api:3.1.6")
 }
 
 tasks {
@@ -34,6 +33,6 @@ tasks {
     }
     create<Copy>("dist") {
         from (shadowJar)
-        into(".\\")
+        into(".\\out\\")
     }
 }

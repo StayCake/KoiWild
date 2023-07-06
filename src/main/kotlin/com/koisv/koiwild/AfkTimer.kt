@@ -3,13 +3,11 @@ package com.koisv.koiwild
 import com.koisv.koiwild.KoiWild.Companion.isAfk
 import com.koisv.koiwild.KoiWild.Companion.lastActivity
 import com.koisv.koiwild.KoiWild.Companion.protectOn
-import hazae41.minecraft.kutils.bukkit.info
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.TextColor
 import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.title.Title
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.scheduler.BukkitRunnable
 import java.time.Duration
 import java.time.LocalDateTime
@@ -39,12 +37,11 @@ class AfkTimer: BukkitRunnable() {
                     )
                     protectOn(p)
                     instance.server.onlinePlayers.forEach {
-                        it.sendMessage(
-                            ChatColor.translateAlternateColorCodes(
-                                '&',"&7>> &r${p.name}&7님은 이제 &6잠수 상태&7입니다."
-                            )
-                        )
-                        instance.info(">> ${p.name}님은 이제 잠수 상태입니다.")
+                        it.sendMessage(Component.text(
+                            "&7>> &r${p.name}&7님은 이제 &6잠수 상태&7입니다."
+                                .replace(Regex("/&/g"), "§")
+                        ))
+                        instance.logger.info(">> ${p.name}님은 이제 잠수 상태입니다.")
                     }
                     class ScreenTask : BukkitRunnable() {
                         override fun run() {

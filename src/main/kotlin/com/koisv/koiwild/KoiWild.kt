@@ -1,7 +1,7 @@
 package com.koisv.koiwild
 
-import hazae41.minecraft.kutils.bukkit.msg
-import hazae41.minecraft.kutils.get
+import io.github.monun.kommand.kommand
+import net.kyori.adventure.text.Component
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
@@ -21,16 +21,15 @@ class KoiWild: JavaPlugin() {
         val isAfk = mutableMapOf<Player, Int>() // 0 : 해제 | 1 : 준비 | 2 : 설정
 
         fun patchShow(p: Player) {
-            p.msg("&7≫ &a야생서버 &ev${patch.getDouble("version")} &a패치노트")
-            p.msg("")
+            p.sendMessage(Component.text("&7≫ &a야생서버 &ev${patch.getDouble("version")} &a패치노트"))
+            p.sendMessage(Component.text(""))
             patch.getStringList("notes").forEach {
-                p.sendMessage("- $it")
+                p.sendMessage(Component.text("- $it"))
             }
-            p.msg("")
-            p.msg("&7≫ &a나중에 다시 보려면 \"&e/p\"&a를 사용하세요!")
+            p.sendMessage(Component.text(""))
+            p.sendMessage(Component.text("&7≫ &a나중에 다시 보려면 \"&e/p\"&a를 사용하세요!"))
         }
         fun protectOn(p: Player) {
-            p.isFlying = true
             p.flySpeed = 0F
             p.isSleepingIgnored = true
             p.canPickupItems = false
@@ -39,7 +38,6 @@ class KoiWild: JavaPlugin() {
             p.isSilent = true
         }
         fun protectOff(p: Player) {
-            p.isFlying = false
             p.flySpeed = 0.1F
             p.isSleepingIgnored = false
             p.canPickupItems = true
@@ -54,13 +52,13 @@ class KoiWild: JavaPlugin() {
     }
 
     override fun onEnable() {
-        logger.info("Enabling - v${description.version}")
+        logger.info("Enabling - v${pluginMeta.version}")
         instance = this
         server.pluginManager.registerEvents(WildEvents(), this)
-        patchFile = dataFolder["patch.yml"]
+        patchFile = File(dataFolder, "patch.yml")
         patch = YamlConfiguration.loadConfiguration(patchFile)
 
-        /*kommand {
+        kommand {
             register("p") {
                 then("version" to double(0.0, Double.MAX_VALUE)) {
                     requires { hasPermission(4, "koiwild.patchwrite") }
@@ -70,7 +68,7 @@ class KoiWild: JavaPlugin() {
                         val version: Double = it["version"]
                         patch.set("version", version)
                         writeMode[it.source.player] = true
-                        it.source.player.msg("[작성 모드 시작] v$version")
+                        it.source.player.sendMessage(Component.text("[작성 모드 시작] v$version"))
                     }
                 }
                 then("u") {
@@ -83,7 +81,9 @@ class KoiWild: JavaPlugin() {
                     requires { hasPermission(4, "koiwild.patchwrite") }
                     executes {
                         writeMode[it.source.player] = false
-                        it.source.player.msg("[작성 모드 종료] v${patch.getDouble("version")}")
+                        it.source.player.sendMessage(Component.text(
+                            "[작성 모드 종료] v${patch.getDouble("version")}"
+                        ))
                         patch.set("notes", tempWrite.toList())
                         patch.save(patchFile)
                     }
@@ -93,10 +93,16 @@ class KoiWild: JavaPlugin() {
                     config.set(it.source.player.name, patch.getDouble("version"))
                 }
             }
-        }*/
+        }
+
+        /*kommand {
+            register("test", "테스트1") {
+                executes { player.sendMessage("Now Testing") }
+            }
+        }
 
         getCommand("p")?.setExecutor(Command())
-        getCommand("pw")?.setExecutor(Command())
+        getCommand("pw")?.setExecutor(Command())*/
         AfkTimer().runTaskTimer(this, 0, 1)
         server.onlinePlayers.forEach { lastActivity[it] = LocalDateTime.now() }
     }
