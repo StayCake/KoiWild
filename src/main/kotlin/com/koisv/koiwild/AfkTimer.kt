@@ -36,10 +36,10 @@ class AfkTimer: BukkitRunnable() {
                             )
                     )
                     protectOn(p)
+                    val colorCode = Regex("&")
                     instance.server.onlinePlayers.forEach {
                         it.sendMessage(Component.text(
-                            "&7>> &r${p.name}&7님은 이제 &6잠수 상태&7입니다."
-                                .replace(Regex("/&/g"), "§")
+                            colorCode.replace("&7>> &r${p.name}&7님은 이제 &6잠수 상태&7입니다.", "§")
                         ))
                         instance.logger.info(">> ${p.name}님은 이제 잠수 상태입니다.")
                     }

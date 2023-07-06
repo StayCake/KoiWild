@@ -29,10 +29,10 @@ class WildEvents: Listener {
                 Component.text(p.name)
             )
             protectOff(p)
+            val colorCode = Regex("&")
             instance.server.onlinePlayers.forEach {
                 it.sendMessage(Component.text(
-                        "&7>> &r${p.name}&7님은 이제 &a잠수 상태&7가 아닙니다."
-                            .replace(Regex("/&/g"), "§")
+                    colorCode.replace("&7>> &r${p.name}&7님은 이제 &a잠수 상태&7가 아닙니다.", "§")
                 ))
                 instance.logger.info(">> ${p.name}님은 이제 잠수 상태가 아닙니다.")
             }
