@@ -22,12 +22,8 @@ class WildEvents: Listener {
     fun cancel(p: Player) {
         lastActivity[p] = LocalDateTime.now()
         if (isAfk[p] == 2) {
-            p.displayName(
-                Component.text(p.name)
-            )
-            p.playerListName(
-                Component.text(p.name)
-            )
+            p.displayName(Component.text(p.name))
+            p.playerListName(Component.text(p.name))
             protectOff(p)
             val colorCode = Regex("&")
             instance.server.onlinePlayers.forEach {

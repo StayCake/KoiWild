@@ -44,10 +44,13 @@ class CmdExec: CommandExecutor {
                                 )
                             )
                             instance.server.onlinePlayers.forEach {
+                                val colorCode = Regex("&")
                                 it.sendMessage(
                                     Component.text("&a시스템 &7>> &e새 패치노트 [v${
                                         KoiWild.patch.getDouble("version")
-                                    }]&a가 방금 발표되었습니다! &f[/p로 확인하기]")
+                                    }]&a가 방금 발표되었습니다! &f[/p로 확인하기]"
+                                        .let { text -> colorCode.replace(text, "§") }
+                                    )
                                 )
                             }
                             KoiWild.patch.set("notes", KoiWild.tempWrite.toList())
