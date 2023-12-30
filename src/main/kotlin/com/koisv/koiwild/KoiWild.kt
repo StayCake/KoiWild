@@ -21,13 +21,18 @@ class KoiWild: JavaPlugin() {
         val isAfk = mutableMapOf<Player, Int>() // 0 : 해제 | 1 : 준비 | 2 : 설정
 
         fun patchShow(p: Player) {
-            p.sendMessage(Component.text("&7≫ &a야생서버 &ev${patch.getDouble("version")} &a패치노트"))
+            val colorCode = Regex("&")
+            p.sendMessage(Component.text("&7≫ &a야생서버 &ev${patch.getDouble("version")} &a패치노트"
+                .let { text -> colorCode.replace(text, "§") }
+            ))
             p.sendMessage(Component.text(""))
             patch.getStringList("notes").forEach {
-                p.sendMessage(Component.text("- $it"))
+                p.sendMessage(Component.text("- $it"
+                    .let { text -> colorCode.replace(text, "§") }))
             }
             p.sendMessage(Component.text(""))
-            p.sendMessage(Component.text("&7≫ &a나중에 다시 보려면 \"&e/p\"&a를 사용하세요!"))
+            p.sendMessage(Component.text("&7≫ &a나중에 다시 보려면 \"&e/p\"&a를 사용하세요!"
+                .let { text -> colorCode.replace(text, "§") }))
         }
         fun protectOn(p: Player) {
             p.flySpeed = 0F
