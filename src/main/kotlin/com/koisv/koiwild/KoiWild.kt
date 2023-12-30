@@ -1,6 +1,5 @@
 package com.koisv.koiwild
 
-import io.github.monun.kommand.kommand
 import net.kyori.adventure.text.Component
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
@@ -8,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.time.LocalDateTime
 
+@Suppress("UnstableApiUsage")
 class KoiWild: JavaPlugin() {
     companion object {
 
@@ -58,7 +58,7 @@ class KoiWild: JavaPlugin() {
         patchFile = File(dataFolder, "patch.yml")
         patch = YamlConfiguration.loadConfiguration(patchFile)
 
-        kommand {
+        /*kommand {
             register("p") {
                 then("version" to double(0.0, Double.MAX_VALUE)) {
                     requires { hasPermission(4, "koiwild.patchwrite") }
@@ -93,16 +93,10 @@ class KoiWild: JavaPlugin() {
                     config.set(it.source.player.name, patch.getDouble("version"))
                 }
             }
-        }
+        }*/
 
-        /*kommand {
-            register("test", "테스트1") {
-                executes { player.sendMessage("Now Testing") }
-            }
-        }
-
-        getCommand("p")?.setExecutor(Command())
-        getCommand("pw")?.setExecutor(Command())*/
+        getCommand("p")?.setExecutor(CmdExec())
+        getCommand("pw")?.setExecutor(CmdExec())
         AfkTimer().runTaskTimer(this, 0, 1)
         server.onlinePlayers.forEach { lastActivity[it] = LocalDateTime.now() }
     }

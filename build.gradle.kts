@@ -1,10 +1,10 @@
 plugins {
-    kotlin("jvm") version "1.8.21"
+    kotlin("jvm") version "1.9.21"
     id("com.github.johnrengelman.shadow") version "+"
 }
 
 group = "com.koisv"
-version = "0.23-SNAPSHOT"
+version = "0.24-SNAPSHOT"
 
 repositories {
     mavenCentral()
@@ -14,8 +14,8 @@ repositories {
 
 dependencies {
     compileOnly(kotlin("stdlib"))
-    compileOnly("io.papermc.paper:paper-api:1.20.1-R0.1-SNAPSHOT")
-    compileOnly("io.github.monun:kommand-api:3.1.6")
+    compileOnly("io.papermc.paper:paper-api:1.20.2-R0.1-SNAPSHOT")
+    //compileOnly("io.github.monun:kommand-api:3.1.6")
 }
 
 tasks {
